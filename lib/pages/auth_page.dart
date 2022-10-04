@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import '../components/auth_form.dart';
 import '../models/auth_form_data.dart';
 import '../utils/loading_util.dart';
-import 'loading_page.dart';
 
 class AuthPage extends StatefulWidget {
   const AuthPage({Key? key}) : super(key: key);
@@ -15,10 +14,20 @@ class AuthPage extends StatefulWidget {
 class _AuthPageState extends State<AuthPage> {
   bool _isLoading = false;
 
-  void _handleSubmit(AuthFormData formData) {
-    setState(() => _isLoading = true);
+  Future<void> _handleSubmit(AuthFormData formData) async {
+    try {
+      setState(() => _isLoading = true);
 
-    setState(() => _isLoading = false);
+      if (formData.isLogin) {
+        // Login
+      } else {
+        // Sign Up
+      }
+    } catch (error) {
+      // Handle exception
+    } finally {
+      setState(() => _isLoading = false);
+    }
   }
 
   @override
@@ -28,8 +37,10 @@ class _AuthPageState extends State<AuthPage> {
       body: Stack(
         children: [
           Center(
-            child: SingleChildScrollView(
-              child: AuthForm(onSubmit: _handleSubmit),
+            child: SafeArea(
+              child: SingleChildScrollView(
+                child: AuthForm(onSubmit: _handleSubmit),
+              ),
             ),
           ),
           if (_isLoading)
