@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 
 import '../components/auth_form.dart';
-import '../models/auth_form_data.dart';
+import '../core/models/auth_form_data.dart';
+import '../core/services/auth/auth_service.dart';
 import '../utils/loading_util.dart';
+import '../utils/messenger_util.dart';
 
 class AuthPage extends StatefulWidget {
   const AuthPage({Key? key}) : super(key: key);
@@ -19,12 +21,34 @@ class _AuthPageState extends State<AuthPage> {
       setState(() => _isLoading = true);
 
       if (formData.isLogin) {
-        // Login
+        await AuthService().login(
+          formData.email,
+          formData.password,
+        );
+
+        MessengerUtil.showMessage(
+          context: context,
+          message: 'Successfully logged in!',
+        );
       } else {
-        // Sign Up
+        await AuthService().signUp(
+          formData.name,
+          formData.email,
+          formData.password,
+          formData.image,
+        );
+
+        MessengerUtil.showMessage(
+          context: context,
+          message: 'Successfully signed up!',
+        );
       }
     } catch (error) {
-      // Handle exception
+      MessengerUtil.showMessage(
+        context: context,
+        message: 'Something went wrong. Try again later!',
+        isError: true,
+      );
     } finally {
       setState(() => _isLoading = false);
     }
