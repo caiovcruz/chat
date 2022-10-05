@@ -26,7 +26,7 @@ class UserImage extends StatelessWidget {
                 fit: BoxFit.cover,
               )
             : Image.asset(
-                'assets/images/user_image_placeholder.png',
+                'assets/images/avatar.png',
                 width: 125,
                 height: 125,
                 fit: BoxFit.cover,
