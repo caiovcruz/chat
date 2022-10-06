@@ -21,6 +21,8 @@ class AuthForm extends StatefulWidget {
 class _AuthFormState extends State<AuthForm> {
   final _formKey = GlobalKey<FormState>();
   final _formData = AuthFormData();
+  bool _hidePassword = true;
+  bool _hideConfirmPassword = true;
 
   void _onImagePick(File image) {
     _formData.image = image;
@@ -71,21 +73,37 @@ class _AuthFormState extends State<AuthForm> {
                 key: const ValueKey('password'),
                 initialValue: _formData.password,
                 onChanged: (password) => _formData.password = password,
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                   labelText: 'Password',
-                  border: OutlineInputBorder(),
+                  border: const OutlineInputBorder(),
+                  suffixIcon: TextButton(
+                    onPressed: () {
+                      setState(() {
+                        _hidePassword = !_hidePassword;
+                      });
+                    },
+                    child: Text(_hidePassword ? 'show' : 'hide'),
+                  ),
                 ),
-                obscureText: true,
+                obscureText: _hidePassword ? true : false,
                 validator: passwordValidator,
               ),
               if (_formData.isSignUp)
                 TextFormField(
                   key: const ValueKey('confirmPassword'),
-                  decoration: const InputDecoration(
+                  decoration: InputDecoration(
                     labelText: 'Confirm Password',
-                    border: OutlineInputBorder(),
+                    border: const OutlineInputBorder(),
+                    suffixIcon: TextButton(
+                      onPressed: () {
+                        setState(() {
+                          _hideConfirmPassword = !_hideConfirmPassword;
+                        });
+                      },
+                      child: Text(_hideConfirmPassword ? 'show' : 'hide'),
+                    ),
                   ),
-                  obscureText: true,
+                  obscureText: _hideConfirmPassword ? true : false,
                   validator: confirmPasswordValidator,
                 ),
               Row(
