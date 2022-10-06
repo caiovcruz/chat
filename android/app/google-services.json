@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "403397701156",
+    "project_id": "chat-ac84b",
+    "storage_bucket": "chat-ac84b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:403397701156:android:68d4898a1c8880419872b1",
+        "android_client_info": {
+          "package_name": "br.com.cruzlabs.chat"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "403397701156-h60d8lvfkk1qjrjqtqk7v54tag12diag.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDO5TI4yvnEOeHB276jEkSq0sQPzONEe4o"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "403397701156-h60d8lvfkk1qjrjqtqk7v54tag12diag.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
