@@ -115,7 +115,7 @@ class _AuthFormState extends State<AuthForm> {
 
     final validations = [
       TextFieldValidator.required('Name', trimmedName),
-      TextFieldValidator.minLength('Name', trimmedName, 5),
+      TextFieldValidator.minLength('Name', trimmedName, 3),
     ];
 
     for (var validation in validations) {

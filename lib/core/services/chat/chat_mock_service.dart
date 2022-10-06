@@ -8,32 +8,7 @@ import 'package:chat/core/models/chat_message.dart';
 import 'chat_service.dart';
 
 class ChatMockService implements ChatService {
-  static final List<ChatMessage> _messages = [
-    ChatMessage(
-      id: '1',
-      text: 'Good Morning!',
-      createdAt: DateTime.now(),
-      userId: '123',
-      userName: 'Loid',
-      userImageURL: 'assets/images/avatar.png',
-    ),
-    ChatMessage(
-      id: '1',
-      text: 'Good Morning. We\'ll have reunion today?',
-      createdAt: DateTime.now(),
-      userId: '456',
-      userName: 'Yor',
-      userImageURL: 'assets/images/avatar.png',
-    ),
-    ChatMessage(
-      id: '1',
-      text: 'Yes. We will, now.',
-      createdAt: DateTime.now(),
-      userId: '123',
-      userName: 'Loid',
-      userImageURL: 'assets/images/avatar.png',
-    ),
-  ];
+  static final List<ChatMessage> _messages = [];
   static MultiStreamController<List<ChatMessage>>? _controller;
   static final _messagesStream = Stream<List<ChatMessage>>.multi((controller) {
     _controller = controller;

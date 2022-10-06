@@ -6,8 +6,43 @@ import '../core/services/chat/chat_service.dart';
 import '../utils/loading_util.dart';
 import 'message_bubble.dart';
 
-class Messages extends StatelessWidget {
+class Messages extends StatefulWidget {
   const Messages({Key? key}) : super(key: key);
+
+  @override
+  State<Messages> createState() => _MessagesState();
+}
+
+class _MessagesState extends State<Messages> {
+  final _scrollController = ScrollController();
+  bool _showScrollToEnd = false;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _scrollController.addListener(() {
+      setState(() {
+        if (_scrollController.hasClients) {
+          _showScrollToEnd = _scrollController.offset > 400 ? true : false;
+        }
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _scrollController.dispose();
+  }
+
+  void _scrollToEnd() {
+    _scrollController.animateTo(
+      0,
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.linear,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -22,14 +57,47 @@ class Messages extends StatelessWidget {
             child: Text('No messages. Let\'s talk?'),
           );
         } else {
-          final messages = snapshot.data!;
-          return ListView.builder(
-            itemCount: messages.length,
-            itemBuilder: (ctx, index) => MessageBubble(
-              key: ValueKey(messages[index].id),
-              message: messages[index],
-              belongsToCurrentUser: currentUser?.id == messages[index].userId,
-            ),
+          final messages = snapshot.data!.reversed.toList();
+          return Stack(
+            children: [
+              Positioned.fill(
+                child: ListView.builder(
+                  controller: _scrollController,
+                  reverse: true,
+                  itemCount: messages.length,
+                  itemBuilder: (ctx, index) => MessageBubble(
+                    key: ValueKey(messages[index].id),
+                    message: messages[index],
+                    belongsToCurrentUser:
+                        currentUser?.id == messages[index].userId,
+                  ),
+                ),
+              ),
+              if (_showScrollToEnd)
+                Positioned(
+                  bottom: 0,
+                  right: 0,
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 10),
+                    child: TextButton(
+                      onPressed: _scrollToEnd,
+                      style: TextButton.styleFrom(
+                        backgroundColor: Theme.of(context).colorScheme.primary,
+                        shape: const RoundedRectangleBorder(
+                          borderRadius: BorderRadius.only(
+                            topLeft: Radius.circular(5),
+                            bottomLeft: Radius.circular(5),
+                          ),
+                        ),
+                      ),
+                      child: const Icon(
+                        Icons.arrow_circle_down_rounded,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ),
+            ],
           );
         }
       },

@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import '../core/models/chat_message.dart';
 
@@ -84,6 +85,7 @@ class MessageBubble extends StatelessWidget {
                       fontWeight: FontWeight.bold,
                     ),
                   ),
+                  const SizedBox(height: 5),
                   Text(
                     message.text,
                     textAlign:
@@ -92,12 +94,18 @@ class MessageBubble extends StatelessWidget {
                       color: belongsToCurrentUser ? Colors.black : Colors.white,
                     ),
                   ),
-                  Text(
-                    message.createdAt.toString(),
-                    textAlign:
-                        belongsToCurrentUser ? TextAlign.right : TextAlign.left,
-                    style: TextStyle(
-                      color: belongsToCurrentUser ? Colors.black : Colors.white,
+                  const SizedBox(height: 5),
+                  Align(
+                    alignment: belongsToCurrentUser
+                        ? Alignment.centerLeft
+                        : Alignment.centerRight,
+                    child: Text(
+                      DateFormat('EEE').add_Hm().format(message.createdAt),
+                      style: TextStyle(
+                        color: belongsToCurrentUser
+                            ? Colors.black38
+                            : Colors.white70,
+                      ),
                     ),
                   ),
                 ],
