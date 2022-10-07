@@ -49,7 +49,9 @@ class _MessagesState extends State<Messages> {
       stream: ChatService().messagesStream(),
       builder: (ctx, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return LoadingUtil.showLoading();
+          return LoadingUtil.showLoading(
+            color: Theme.of(context).colorScheme.primary,
+          );
         } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
           return const Center(
             child: Text('No messages. Let\'s talk?'),

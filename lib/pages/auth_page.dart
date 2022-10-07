@@ -50,7 +50,9 @@ class _AuthPageState extends State<AuthPage> {
         isError: true,
       );
     } finally {
-      setState(() => _isLoading = false);
+      if (mounted) {
+        setState(() => _isLoading = false);
+      }
     }
   }
 

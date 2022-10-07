@@ -29,6 +29,8 @@ class _AuthFormState extends State<AuthForm> {
   }
 
   void _submit() {
+    FocusManager.instance.primaryFocus?.unfocus();
+
     if (_formKey.currentState?.validate() ?? false) {
       widget.onSubmit(_formData);
     }
