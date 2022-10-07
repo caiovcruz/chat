@@ -1,7 +1,8 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:chat/core/models/chat_user.dart';
-import 'dart:io';
+import 'package:firebase_core/firebase_core.dart';
 
 import 'package:chat/core/services/auth/auth_service.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -31,24 +32,35 @@ class AuthFirebaseService implements AuthService {
     String password,
     File? image,
   ) async {
-    final auth = FirebaseAuth.instance;
-    UserCredential credential = await auth.createUserWithEmailAndPassword(
+    FirebaseApp tempApp = await Firebase.initializeApp(
+      name: 'temporaryRegister',
+      options: Firebase.app().options,
+    );
+
+    final tempAuth = await FirebaseAuth.instanceFor(
+      app: tempApp,
+    ).createUserWithEmailAndPassword(
       email: email,
       password: password,
     );
 
-    if (credential.user != null) {
+    if (tempAuth.user != null) {
       // 1. Upload user's photo
-      final imageName = '${credential.user!.uid}.jpg';
+      final imageName = '${tempAuth.user!.uid}.jpg';
       final imageURL = await _uploadUserImage(image, imageName);
 
       // 2. Update user's attributes
-      await credential.user?.updateDisplayName(name);
-      await credential.user?.updatePhotoURL(imageURL);
+      await tempAuth.user?.updateDisplayName(name);
+      await tempAuth.user?.updatePhotoURL(imageURL);
 
-      // 3. Save user on database (optional)
-      await _saveChatUser(_toChatUser(auth.currentUser!));
+      // 3. Login the new user
+      await login(email, password);
+
+      // 4. Save user on database (optional)
+      await _saveChatUser(_toChatUser(tempAuth.user!));
     }
+
+    await tempApp.delete();
   }
 
   @override

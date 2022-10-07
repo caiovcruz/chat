@@ -15,18 +15,16 @@ class Messages extends StatefulWidget {
 
 class _MessagesState extends State<Messages> {
   final _scrollController = ScrollController();
-  bool _showScrollToEnd = false;
+  final _showScrollToEnd = ValueNotifier(false);
 
   @override
   void initState() {
     super.initState();
 
     _scrollController.addListener(() {
-      setState(() {
-        if (_scrollController.hasClients) {
-          _showScrollToEnd = _scrollController.offset > 400 ? true : false;
-        }
-      });
+      if (_scrollController.hasClients) {
+        _showScrollToEnd.value = _scrollController.offset > 400 ? true : false;
+      }
     });
   }
 
@@ -73,7 +71,7 @@ class _MessagesState extends State<Messages> {
                   ),
                 ),
               ),
-              if (_showScrollToEnd)
+              if (_showScrollToEnd.value)
                 Positioned(
                   bottom: 0,
                   right: 0,
